@@ -21,8 +21,8 @@ jobs:
         
       - run: yarn config set registry https://npm.f97.xyz/
       - run: yarn
-#       - run: yarn clean
-#       - run: yarn update
+      - run: yarn clean
+      - run: yarn update
       - name: Update changes in GitHub repository
         run:  |
           git config --global user.name 'bot-lnvs' 
