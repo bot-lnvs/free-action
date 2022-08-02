@@ -1,8 +1,8 @@
 name: Update new posts
 
 on:
-  schedule:
-    - cron: '*/20 * * * *'
+#   schedule:
+#     - cron: '*/20 * * * *'
   workflow_dispatch:
   
 jobs:
@@ -11,18 +11,21 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
+    env:
+      NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+
     steps:
       - uses: actions/checkout@v3
-        with:
-          repository: bot-lnvs/phoenix-cli
-          token: ${{ secrets.REPO_TOKEN }}
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
-        
-      - run: yarn config set registry https://npm.f97.xyz/
-      - run: yarn
-      - run: yarn clean
-      - run: yarn update
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: echo "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: echo "@f97:registry=https://npm.pkg.github.com/" >> ~/.npmrc
+      - run: npm ci
+      - run: npm run clean
+      - run: npm run update
       - name: Update changes in GitHub repository
         run:  |
           git config --global user.name 'bot-lnvs' 
