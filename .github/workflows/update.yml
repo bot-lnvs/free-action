@@ -2,7 +2,7 @@ name: Update new posts
 
 on:
   schedule:
-    - cron: '*/20 * * * *'
+    - cron: '*/5 * * * *'
   workflow_dispatch:
   
 jobs:
@@ -24,6 +24,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: npm
 
       - run: echo "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run: echo "@f97:registry=https://npm.pkg.github.com/" >> ~/.npmrc
